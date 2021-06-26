@@ -1,5 +1,6 @@
 import config as cfg
 
+# Initialize boarding house
 def initialize_boarding_house():
     for cls in cfg.classes:
         for food_pref in cfg.food_preferences:
@@ -7,19 +8,20 @@ def initialize_boarding_house():
             cfg.boarding_house_allocation[boarding_house] = list()
     cfg.boarding_house_allocation[cfg.NOT_ALLOCATED] = list()
 
+# for getting  each hostel capacity
 def get_each_hostel_capacity():
     try:
         total_capacity = int(input("Please Insert Total Boarding Capacity: "))
-        if total_capacity>=0 and total_capacity%4 == 0:
+        if total_capacity>=0 and total_capacity%4 == 0: # to validate total capacity
             return int(total_capacity/4)
         else:
             print("Please provide initial capacity in multiplication of 4 and a positive number")
             return get_each_hostel_capacity()
     except Exception as e:
         print("Please provide capacity in integer")
-        return get_each_hostel_capacity()
+        return get_each_hostel_capacity()     # retrying until user will not give correct capacity value
 
-
+# validate and queue data received from user
 def validate_and_queue_registration_data(registration_data):
     student_data = registration_data.split()
     if len(student_data) != 4:
@@ -50,16 +52,16 @@ def validate_and_queue_registration_data(registration_data):
     else:
         print("Student is already registered")
 
-
+# receive input from user until user entered exit or fin
 def get_input():
     print("Follow given format for student registration (reg roll_number class food_preference)")
     # use space as a separator between attributes
     registration_data = input("Please Insert New Student Record: ")
-    while registration_data not in  ['fin', 'exit']:
+    while registration_data not in ['fin', 'exit']:
         validate_and_queue_registration_data(registration_data)
         registration_data = input("Please Insert New Student Record: ")
 
-
+# to check boarding house is availability
 def check_availability(boarding_house_capacity, boarding_house):
     if boarding_house_capacity == 0:
         return False
@@ -68,11 +70,11 @@ def check_availability(boarding_house_capacity, boarding_house):
     else:
         return False
 
-
+# returns boarding house name
 def get_boarding_house_name(student_record):
     return student_record[2].upper() + student_record[3].upper()
 
-
+# pick students records from queue and allocate boarding house
 def assign_boarding_house(boarding_house_capacity):
     for student_record in cfg.registration_queue:
         boarding_house = get_boarding_house_name(student_record)
@@ -100,6 +102,6 @@ def main():
     assign_boarding_house(boarding_house_capacity)
     show_boarding_allocation()
 
-
+# invoking main method to start the boarding process
 if __name__ == "__main__":
     main()
